@@ -50,12 +50,15 @@ private:
 
     std::string m_pathForScan;
 
+    void* m_lib;
+
 
 private:
     void memoryAllocation() override;
     void setUpProgress();
     void setUpWidgets() override;
     void callback(const std::string& path, const std::string& format, const std::string& operation) override;
+    void releaseWidgetInstance(AbstractExecutionWidget *instance);
 
 };
 
