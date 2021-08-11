@@ -12,13 +12,12 @@ void InputSumWidget::setUpWidgets()
     m_layout->addWidget(m_inputOperation,2,1);
     m_layout->addWidget(m_connectToTheNextStage, 3,0,1,2);
     m_layout->addWidget(m_submit, 4,0,1,2);
-    m_layout->addWidget(m_progress, 4,0,1,2);
+//    m_layout->addWidget(m_progress, 4,0,1,2);
 
     m_inputPath->setText("/home/semen/qtProjects/test/");
     m_inputFormat->setText("pdf");
     m_inputOperation->setText("ctrlSum");
 
-    m_progress->hide();
 
     setLayout(m_layout);
 }
@@ -81,16 +80,16 @@ void InputSumWidget::releaseWidgetInstance(AbstractExecutionWidget *instance)
 }
 
 
-void InputSumWidget::setUpProgress()
-{
-    m_submit->hide();
+//void InputSumWidget::setUpProgress()
+//{
+//    m_submit->hide();
 
-    m_progress->show();
-    m_progress->setMaximum(0);
-    m_progress->setMaximum(100);
+//    m_progress->show();
+//    m_progress->setMaximum(0);
+//    m_progress->setMaximum(100);
 
-    m_timer->start(50);
-}
+//    m_timer->start(50);
+//}
 
 
 
@@ -104,8 +103,8 @@ InputSumWidget::InputSumWidget(QWidget *parent, std::string pathForScan)
     connect(m_submit,&QPushButton::clicked,
             this    ,&InputSumWidget::submitPressed);
 
-    connect(m_timer, &QTimer::timeout      ,
-            this   , &InputSumWidget::updateProgress);
+//    connect(m_timer, &QTimer::timeout      ,
+//            this   , &InputSumWidget::updateProgress);
 }
 
 
@@ -156,21 +155,21 @@ void InputSumWidget::submitPressed()
     }
 }
 
-void InputSumWidget::updateProgress()
-{
-    m_progress->setValue(m_progress->value() + 1);
-    if (m_progress->value() == m_progress->maximum())
-    {
-//        m_outputWidget->show();
+//void InputSumWidget::updateProgress()
+//{
+//    m_progress->setValue(m_progress->value() + 1);
+//    if (m_progress->value() == m_progress->maximum())
+//    {
+////        m_outputWidget->show();
 
-        m_timer->stop();
+//        m_timer->stop();
 
-        m_progress->setValue(0);
-        m_progress->hide();
-        m_submit->show();
-    }
+//        m_progress->setValue(0);
+//        m_progress->hide();
+//        m_submit->show();
+//    }
 
-}
+//}
 
 
 void InputSumWidget::memoryAllocation()
@@ -183,8 +182,8 @@ void InputSumWidget::memoryAllocation()
      m_inputOperation = new QLineEdit(this);
      m_submit         = new QPushButton("Submit", this);
      m_connectToTheNextStage = new QCheckBox("Connect to the next stage", this);
-     m_progress       = new QProgressBar(this);
-     m_timer          = new QTimer(this);
+//     m_progress       = new QProgressBar(this);
+//     m_timer          = new QTimer(this);
      m_layout         = new QGridLayout(this);
 }
 

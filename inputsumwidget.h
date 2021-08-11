@@ -31,7 +31,7 @@ public:
 
 public slots:
     void submitPressed() override;
-    void updateProgress();
+//    void updateProgress() override;
 
 private:
     QLabel * m_path;
@@ -44,8 +44,8 @@ private:
 
     QPushButton  * m_submit;
     QCheckBox    * m_connectToTheNextStage;
-    QProgressBar * m_progress;
-    QTimer       * m_timer;
+//    QProgressBar * m_progress;
+//    QTimer       * m_timer;
     QGridLayout  * m_layout;
 
     std::string m_pathForScan;
@@ -55,7 +55,7 @@ private:
 
 private:
     void memoryAllocation() override;
-    void setUpProgress();
+//    void setUpProgress();
     void setUpWidgets() override;
     void callback(const std::string& path, const std::string& format, const std::string& operation) override;
     void releaseWidgetInstance(AbstractExecutionWidget *instance);
