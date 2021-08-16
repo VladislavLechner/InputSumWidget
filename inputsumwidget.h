@@ -50,7 +50,7 @@ private:
 
     std::string m_pathForScan;
 
-    void* m_lib;
+    void* m_lib = nullptr;
 
 
 private:
@@ -58,7 +58,7 @@ private:
 //    void setUpProgress();
     void setUpWidgets() override;
     void callback(const std::string& path, const std::string& format, const std::string& operation) override;
-    void releaseWidgetInstance(AbstractExecutionWidget *instance);
+    void releaseExecutionWidgetInstance(AbstractExecutionWidget *instance);
 
 };
 

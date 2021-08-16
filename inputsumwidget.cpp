@@ -60,9 +60,10 @@ void InputSumWidget::callback(const std::string& path, const std::string& format
     executionWidget->show();
     executionWidget->startExecution();
     dlclose(m_lib);
+    m_lib = nullptr;
 }
 
-void InputSumWidget::releaseWidgetInstance(AbstractExecutionWidget *instance)
+void InputSumWidget::releaseExecutionWidgetInstance(AbstractExecutionWidget *instance)
 {
     typedef void (*ReleaseInputWidget)(QWidget* );
     ReleaseInputWidget releaseInputWidget = nullptr;
@@ -117,9 +118,10 @@ InputSumWidget::~InputSumWidget()
 //        delete executionWidget;
 //        executionWidget = nullptr;
 //    }
-    releaseWidgetInstance(executionWidget);
+    releaseExecutionWidgetInstance(executionWidget);
 //    if (m_instance != nullptr)
-    dlclose(m_lib);
+    if (m_lib != nullptr)
+        dlclose(m_lib);
     m_lib = nullptr;
 
     qDebug() << "InputSumWidget destructor";
@@ -191,7 +193,7 @@ void InputSumWidget::memoryAllocation()
 void *getWidgetInstance(std::string pathForScan)
 {
     if(m_instance == nullptr)
-        m_instance = new (std::nothrow) InputSumWidget(nullptr, pathForScan);
+        m_instance = new InputSumWidget(nullptr, pathForScan);
     return m_instance;
 }
 
