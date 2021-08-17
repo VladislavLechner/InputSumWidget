@@ -12,7 +12,6 @@ void InputSumWidget::setUpWidgets()
     m_layout->addWidget(m_inputOperation,2,1);
     m_layout->addWidget(m_connectToTheNextStage, 3,0,1,2);
     m_layout->addWidget(m_submit, 4,0,1,2);
-//    m_layout->addWidget(m_progress, 4,0,1,2);
 
     m_inputPath->setText("/home/semen/qtProjects/test/");
     m_inputFormat->setText("pdf");
@@ -44,7 +43,7 @@ void InputSumWidget::callback(const std::string& path, const std::string& format
     if (getInputWidget == nullptr)
     {
         throw std::runtime_error(dlerror());
-//        qDebug() << "Cannot load create function: " << dlerror() << '\n';
+
         return;
     }
     dlerror();
@@ -55,12 +54,10 @@ void InputSumWidget::callback(const std::string& path, const std::string& format
         throw std::runtime_error("Не удалось открыть библиотеку");
         return;
     }
-    qDebug() << executionWidget;
+    qDebug() << "Pointer of executionWidget in InputSumWidget::callback" << executionWidget;
     executionWidget->setData(path, format, operation);
     executionWidget->show();
     executionWidget->startExecution();
-    dlclose(m_lib);
-    m_lib = nullptr;
 }
 
 void InputSumWidget::releaseExecutionWidgetInstance(AbstractExecutionWidget *instance)
@@ -72,25 +69,12 @@ void InputSumWidget::releaseExecutionWidgetInstance(AbstractExecutionWidget *ins
     if (releaseInputWidget == nullptr)
     {
         throw std::runtime_error(dlerror());
-//        qDebug() << "Cannot load create function: " << dlerror() << '\n';
         return;
     }
     dlerror();
 
     releaseInputWidget(instance);
 }
-
-
-//void InputSumWidget::setUpProgress()
-//{
-//    m_submit->hide();
-
-//    m_progress->show();
-//    m_progress->setMaximum(0);
-//    m_progress->setMaximum(100);
-
-//    m_timer->start(50);
-//}
 
 
 
@@ -104,45 +88,28 @@ InputSumWidget::InputSumWidget(QWidget *parent, std::string pathForScan)
     connect(m_submit,&QPushButton::clicked,
             this    ,&InputSumWidget::submitPressed);
 
-//    connect(m_timer, &QTimer::timeout      ,
-//            this   , &InputSumWidget::updateProgress);
 }
 
 
 
 InputSumWidget::~InputSumWidget()
 {
-//    if (executionWidget != nullptr)
-//    {
-//        executionWidget->close();
-//        delete executionWidget;
-//        executionWidget = nullptr;
-//    }
-    releaseExecutionWidgetInstance(executionWidget);
-//    if (m_instance != nullptr)
+    if (executionWidget != nullptr)
+        releaseExecutionWidgetInstance(executionWidget);
     if (m_lib != nullptr)
         dlclose(m_lib);
     m_lib = nullptr;
+    executionWidget = nullptr;
 
     qDebug() << "InputSumWidget destructor";
-//    executionWidget->setParent(this);
 }
 
 
 void InputSumWidget::submitPressed()
 {
     try {
-//        std::cout << "Main thread id: " << std::this_thread::get_id() << std::endl;
-
-
-//        std::thread th(&ReadDirectory::checkInputData, &m_readDirectory, m_inputPath->text().toStdString(), m_inputFormat->text().toStdString(), m_inputOperation->text().toStdString());
-
-//        th.join();
-//        m_outputWidget = new OutputWidget(m_readDirectory.resultOfMd5Sum(), m_readDirectory.countOfFiles(), m_inputPath->text().toStdString(),
-//                                          m_readDirectory.otherFiles());
         if (m_connectToTheNextStage->isChecked())
         {
-//            setUpProgress();
             callback(m_inputPath->text().toStdString(),m_inputFormat->text().toStdString(), m_inputOperation->text().toStdString());
             this->close();
         }
@@ -153,25 +120,9 @@ void InputSumWidget::submitPressed()
 
     }  catch (...) {
         handle_eptr(std::current_exception());
-        std::cout << "EXCEPTION!!!" << std::endl;
+        std::cout << "EXCEPTION!!! in InputSumWidget::submitPressed()" << std::endl;
     }
 }
-
-//void InputSumWidget::updateProgress()
-//{
-//    m_progress->setValue(m_progress->value() + 1);
-//    if (m_progress->value() == m_progress->maximum())
-//    {
-////        m_outputWidget->show();
-
-//        m_timer->stop();
-
-//        m_progress->setValue(0);
-//        m_progress->hide();
-//        m_submit->show();
-//    }
-
-//}
 
 
 void InputSumWidget::memoryAllocation()
@@ -184,8 +135,6 @@ void InputSumWidget::memoryAllocation()
      m_inputOperation = new QLineEdit(this);
      m_submit         = new QPushButton("Submit", this);
      m_connectToTheNextStage = new QCheckBox("Connect to the next stage", this);
-//     m_progress       = new QProgressBar(this);
-//     m_timer          = new QTimer(this);
      m_layout         = new QGridLayout(this);
 }
 
